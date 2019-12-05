@@ -182,6 +182,11 @@ Convolutional neural networks(CNNs) are structurally very similar to FNNs, the d
 However, in practice this is very different. Since convolution functions act on images rather than specially selected features, they avoid requiring features to be selected from the images.
 
 CNNs have been extensively used in galaxy classification since the late 2010s. There are various approaches using a differing combination of convolutional hidden layers and pooling layers as well as varying levels of hardware capability. Kim \& Brunner \cite{kim_2016_stargalaxy} made use of 5 band images to classify galaxies. They used a structure with 8 convolutional layers, 3 pooling layers and 2 fully connected layers. They achieved an accuracy of 95-98\% depending on which accuracy metric is used. However, in their discussion they mentioned that there was a lack of training data to train with, and this seemed to be a problem which is shared with others working with CNNs. \cite{khalifanoureldeenm_2017_deep} \cite{aniyan_2017_classifying} The reason for this seems unclear to me as there is not a dearth of astronomical data, in fact there is a wealth of such data, why they are not able to acquire such data is quite curious to me.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{CNNExample.png}
+\caption{\label{fig:CNNExample}An image taken from the Kim paper which demonstrates how a CNN works: by repeatedly passing the original image through a convolving filter to make sense of the image.}
+\end{figure}
 
 From the literature, it is also quite clear that there are not too many astronomers truly using CNNs for classification, rather, it seems the wealth of literature is of computer scientists using astronomy data as a proof of concept for their CNNs. And these all garner results of over 95\% with very little data. However, the benefit of computer scientists doing the research is that their code is freely avaliable on repositories such as github.
 
