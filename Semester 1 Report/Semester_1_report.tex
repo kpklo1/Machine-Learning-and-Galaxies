@@ -211,25 +211,33 @@ After delving into the literature, it seems that the methods most immediately ap
 
 
 \section{Progress on Project}
-You should provide a description of the preparatory work and development of background skills that you have undertaken during the first semester of your project. The contents of this section will be dependent on the nature of your project. Early results may be given, but are not a required element, as your ability to generate results during Semester~I will depend on the nature of the work. \textbf{Risk assessments are obligatory} for all experimental projects, and should be included as appendices, with appropriate discussion in the main text.
+Progress on the project has been behind schedule. So far, after completing the literature review, a source detecting algorithm has been created, but that requires the data to be exported from the .fits files into a numpy format, which erases the sky-coordinates among other metadata. This is undesirable because ultimately the sky-coordinates are necessary to cross reference with existing sky surveys to create a training set data. Therefore, an alternate method must be sought. 
 
-Your report should reflect the actual work you have done so far, providing evidence that you have put in the time expected of students during the 1st semester of PHY480. You should describe, concisely, any techniques or skills you have developed in the early stages of your project,
-using appropriate scientific language. You should avoid the use of jargon, but if you do use jargon or acronyms, they should be defined before use. All equation should be numbered, following standard scientific style, as in eqn~\ref{E=mc2}.
-\begin{equation}
-\label{E=mc2}
-E = m\,c^2 \, .
-\end{equation}
-If you wish, you may add appendices to present your preliminary results in more detail or to list any computer code you have written. In some projects, it might be appropriate to summarize the key findings in a table.
+In seeking such an alternative method, the code will also be extended to loop through all the training set images as opposed to the current single image. 
 
+In terms of documentation, I have set up a github page which is shared with my supervisor (Dr James Mullaney), in lieu of a standard lab-book. This is more appropriate since given a coding based project, the github page retains all the functionality of a lab book of permanency, but has the added benefit of being designed for the purposes of code. A link to the github page is provided in the appendix.
 
+In addition, I have gradually familiarised myself with the differences between working on a Unix based system (MacOS which I am used to), and Windows NT system (Windows 10) which I need because I would like to make use of Nvidia CUDA cores which are not available on a Mac Machine.
 
 \section{Project Plan}
-You should give a plan for the work to be carried out next semester, in as much detail as you think appropriate. Each project plan element should consist of a brief description of the task, a realistic estimate of the time it will take to complete this task, and an achievement milestone that indicates task completion. The number of tasks should be realistic, and the project should be broken down into appropriately sized components. It might be appropriate to present the project plan as a Gantt chart: see~\cite{gannt}.
-
-Note that your project plan has to be reproduced verbatim in the semester II report, and that the semester II report should include a discussion of how well you kept to your plan. Research is, by definition, unpredictable, and so there is no shame in departing from your plan, provided that you had a good reason to do so. However, you should be able to defend your change of course, and this is what you are asked to do in your report.  
+\subsection{Postage Stamp Cutout}
+Small 'postage stamp' cutouts from the large image are required to train SVMs. This requires that the previous source detection algorithm is functional. I believe this will take up to 10 hours. 
+\subsection{Cross-Referencing Data}
+After a satisfactory set of postage stamps is acquired, the cutouts need to be cross referenced with existing sky surveys to identify known objects to use as a training set. For now, the plan is to use SDSS to be the primary catalogue of reference. This should take up to 10 hours.
+\subsection{PCA}
+Performing a PCA on the data should be straightforwardly applying the algorithm. The issue is computing time, but I don't foresee this taking a vast amount of that either. I will allocate 5 hours to this for the time being.
+\subsection{SVM and Kernal SVM}
+Once the PCA is complete, a simple SVM can be performed, either using packaged algorithms or self-written ones. The limiting factor here is also computing time since an SVM algorithm is quite straight-forward to write.
+Once that is complete, a kernal-SVM algorithm will be attempted. However since this is quite complex, a packaged solution will probably be used. I foresee many potential issues with trying this so I would allocate a total of 25 hours for this section.
+\subsection{CNN}
+After the SVM/PCA method is completed, a CNN will be attempted. Since the allure of a CNN is that it does not require the cutting out of postage stamps, that will be the first choice. However, it is still difficult to see how to properly make a training set for CNN this way. Further, many refinements would be necessary for a CNN, and training each iteration will be very time intensive. Therefore, I will conservatively estimate that 60 hours will be needed.
+\subsection{Report}
+After the project proper is finished, the report will be written. I expect some 10-20 hours will be spent on report writing.
+\subsection{Other areas}
+If there is any time to spare, other possible areas of work would be to make a Feedforward Neural Network and compare the results to kSVM. Otherwise, if the project proceeds vastly better than expected, an attempt to classify galaxies can be done.
 
 \section{Relationship to previous projects}
-If you have already completed a project in the group where you are working, you should include a $\sim 1$-page statement indicating how the PHY480 project differs from previous work. This is especially important if you are building on previous work done, for example, during a summer project. You must state clearly the new work that you have done during this semester. This statement should be attached as an appendix.
+I have previously completed a machine learning summer internship (Summer 2019) in which I made teaching materials for a university course at the University of Hong Kong. However, since it is a general machine learning course with no research component, it can only be described as a good baseline for this project with no suspicion of self-plagiarism.
 
 \section{Submitting the report}
 
