@@ -82,7 +82,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
     
 
     c = SkyCoord(ra=dfsel['sky_centroid.ra']*u.degree, dec=dfsel['sky_centroid.dec']*u.degree)
-    catalog = SkyCoord(ra=galaxies['ra']*u.degree, dec=galaxies['dec']*u.degree)
+    catalog = SkyCoord(ra=galaxies['ra'].to_numpy()*u.degree, dec=galaxies['dec'].to_numpy()*u.degree)
     
     #Cross referencing SDSS and sources
     max_sep = 3.0 * u.arcsec
@@ -112,7 +112,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
 
         # Write the cutout to a new FITS file
         cutout_filename = '../Data/galaxyfits/galaxyfits-'+str(galcounter)+'.fits'
-        hdu.writeto(cutout_filename, overwrite=False)
+        hdu.writeto(cutout_filename, overwrite=True)
     
     
     
@@ -139,7 +139,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
     stars = res.to_pandas()
 
     c = SkyCoord(ra=dfsel['sky_centroid.ra']*u.degree, dec=dfsel['sky_centroid.dec']*u.degree)
-    catalog = SkyCoord(ra=stars['ra']*u.degree, dec=stars['dec']*u.degree)
+    catalog = SkyCoord(ra=stars['ra'].to_numpy()*u.degree, dec=stars['dec'].to_numpy()*u.degree)
     
     #Cross referencing SDSS and sources
     max_sep = 3.0 * u.arcsec
@@ -169,7 +169,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
 
         # Write the cutout to a new FITS file
         cutout_filename = '../Data/starfits/starfits-'+str(starcounter)+'.fits'
-        hdu.writeto(cutout_filename, overwrite=False)
+        hdu.writeto(cutout_filename, overwrite=True)
     
     toc = time.perf_counter()
     print(f"Runtime {toc - tic} seconds")
