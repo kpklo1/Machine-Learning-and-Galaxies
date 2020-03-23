@@ -111,7 +111,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
 
 
         # Write the cutout to a new FITS file
-        cutout_filename = '../Data/galaxyfits/galaxyfits-'+str(galcounter)+'.fits'
+        cutout_filename = '../Data/cutouts/galaxyfits/galaxyfits-'+str(galcounter)+'.fits'
         hdu.writeto(cutout_filename, overwrite=True)
     
     
@@ -168,7 +168,7 @@ for filepath in glob.iglob(r'../Data/newfits/*.fits', recursive=False):
 
 
         # Write the cutout to a new FITS file
-        cutout_filename = '../Data/starfits/starfits-'+str(starcounter)+'.fits'
+        cutout_filename = '../Data/cutouts/starfits/starfits-'+str(starcounter)+'.fits'
         hdu.writeto(cutout_filename, overwrite=True)
     
     toc = time.perf_counter()
