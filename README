@@ -1,1 +1,3 @@
-hello world
+1. Put all .fits files (which are in SDSS) in newfits.
+2. Run extractionloop.py to make cutouts.
+3. Open DeepNN notebook to use deep learning.
