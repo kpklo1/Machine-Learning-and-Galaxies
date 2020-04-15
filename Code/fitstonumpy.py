@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from astropy.io import fits
 import numpy as np
@@ -12,7 +11,7 @@ for filepath in glob.iglob('../Data/cutouts/**/*.fits', recursive=True):
 
     parts = list(fp.parts)
 
-    parts[2] = "tfcutouts"
+    parts[2] = "npycutouts"
 
     fp = Path(*parts)
 
