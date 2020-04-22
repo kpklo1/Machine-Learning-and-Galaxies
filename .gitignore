@@ -6,3 +6,4 @@
 *.fits
 *.ipynb_checkpoints
 *.npy
+Code/image_classifier/
