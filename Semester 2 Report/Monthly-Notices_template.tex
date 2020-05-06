@@ -250,7 +250,36 @@ The data which is inputted to the \lstinline{npixels} is simply the raw data fro
 
 There is an additional step possible in this process which is to deblend the sources after detecting sources. Deblending is the process in which overlapping sources are distinguished from each other and listed separately. However, the current implement forsakes deblending for two reasons. First is that deblending is costly in terms of processing time---from experience adding the deblending step increases the processing time of the source detection part of the cutout algorithm by 5-10 time. While not an issue for the small scale of the current implementation, since the aspiration is for this to be applied to more data in larger applications of this algorithm, this processing time becomes significant and any savings in processing time is worth it. Second, because deblending deals with overlapping sources, this necessitates that the sources in question are actually overlapping. Therefore, any image-cutouts made from these sources are necessarily of both sources. Because of the implementation of this cutout algorithm also assigns classes (stars or galaxies), if two sources were overlapping and had one of each source, the result would be an entry of essentially the same overlapping source in each category which would present a problem in training the neural network eventually. 
 
-The result of this is an object which directs further functions to the positions and sizes of these sources. This object is used in the \lstinline{source_properties} function and is called \lstinline{segm} in the code. 
+The result of this is an object called a segmentation image. This object is an array with the same size as the data, but it marks pixels where a source is detected with a positive integer to indicate a source is detected.  This object is used in the \lstinline{source_properties} function and is called \lstinline{segm} in the code. 
+
+\subsubsection{Extracting Source Properties}
+The data is then entered into the \lstinline{source_properties} function. This function takes primarily the data and the segmentation array as functions---it also takes World Coordinate System (wcs) information from the header which is required to reference the object's location in sky coordinates. This function outputs an object containing over 30 attributes containing the sources' properties. However, not all 30 attributes are relevant to this project---only 7 attributes are called: xcentroid, ycentroid, \lstinline{sky_centroid.ra}, \lstinline{sky_centroid.dec}, elongation, \lstinline{equivalent_radius}, area. 
+
+Because the \lstinline{source_properties} function calculates the centroid and morphological features of sources [cite documentation], the defining characteristics of the sources detected are the x and y positions of each source's centroid in pixel-space which are represented by the xcentroid and ycentroid values. Because the wcs of the original image is inputted to this function, it does a conversion to the the sky coordinates (right ascension and declination) of the sources, which are the \lstinline{sky_centroid.ra}, \lstinline{sky_centroid.dec} values. 
+
+The elongation value is defined as the ratio of lengths of the semimajor and semiminor axes. This is equivalent to 1-ellipticity. This metric is useful for determining the whether the the object in question is a true sky object or an artefact. 
+
+The area is a measure of the area of sky covered by the source, it has units of pixel-squared. Determining the area is useful because it allows some determination to be made regarding tendencies for either stars or galaxies to be larger on the sky. It is not used in the cutout algorithm, but is retained for further investigation. The equivalent radius is a derived quantity from area, it is the radius of a circle with the same area as the source, it has units of pixels. 
+
+[Img of equiv radius vs elongation]
+
+\subsubsection{Data Cleaning}
+Before the sources can be cut out individually, it is important that as many non-objects i.e. artefacts, be excluded from the extraction. This is done by excluding any source with elongation above 10. This number is a rough estimate to exclude any source which is clearly an artefact [image of streaky lines], but not too low as to exclude highly elongated sources, especially galaxies. 
+
+Another aspect of the data that needs to be cleaned is that by observation of the image, there is a smearing at the edges of the image which elongates sources. This yields subpar samples to train with and therefore it is beneficial to exclude these sources. Therefore all sources which have centroids within 400 pixels within the left and right edges and within 300 pixels within the top and bottom of the image are excluded. 300 or 400 pixels are arbitrary numbers but they are approximately 5\% of the total sizes in either dimension. This means that approximately 10\% of the sources in either dimension are excluded this way. 
+
+\subsubsection{Database Matching}
+Since labeled data is required for the training of the neural network, these labels must be acquired from a source external to the algorithm. In this project, labels are acquired from the SDSS database. 
+
+To do this, a query within the astroquery package is made to the SDSS database. First, the algorithm requests all galaxies in the SDSS database with the constraints that: they are within the confines of the sky coordinates of the initial data image which is easily determined from the wcs data in the header of the .fits file, and that the galaxies are brighter than g-band magnitude 21. The magnitude threshold is an empirical determination based on number of sources returned---because the total number of detected sources from the image is determined beforehand, a magnitude which yields a similar number of sources should be correct. In practice, mag 20 yields too few and mag 22 yields too many sources, therefore a magnitude of 21 is chosen. 
+
+This returns a list of sky coordinates which have galaxies matching the requirements. These sky coordinates are then matched against the sources detected using astropy's matching algorithm and all matches with a tolerance of 3 arcseconds are cut out. 
+
+The cutout algorithm is astropy's Cutout2D. The algorithm makes cutouts of the images, each with a size of 40x40 pixels. Each cutout is stored in a .fits file which is stored in a folder which contains to galaxies. The algorithm then appends modified header data into each cutout which makes it easy to find the location of a cutout from the original image if the need arises. 
+
+The same procedure is completed for stars instead of galaxies with the results being stored in a dedicated stars folder. 
+
+This part of the algorithm appears to be highly multithreaded. Using an 8-core Intel core-i9 9900HK running at 3.6GHz, it takes approximately 45 seconds for the algorithm to cut out each original image while it takes a 4-core Intel core-i7 6920HQ running 2.9GHz around 95 seconds on average. While there are some overhead losses, the performance seems to almost double with a doubling of the cores.
 \subsection{FNN}
 
 \subsection{CNN}
