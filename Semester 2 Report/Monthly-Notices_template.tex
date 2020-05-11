@@ -318,17 +318,78 @@ There was a model found which claims to be 'the best' model for classifying the 
 Of note in that model was that, where one would expect a pooling layer, there was a convolutional layer with stride length 2. It is not immediately obvious why that would yield better results, but it is speculated that since pooling layers represent only dimension reduction without allowing for any training on the inputs/outputs, this stride length increased convolutional layer allows for dimension reduction while also increasing the number of trainable parameters. This comes, however, at the expense of requiring more calculation time. This is not an issue so far, however, because training times are on the order of 2 hours on the current hardware and dataset. Larger datasets and different hardware may well require different considerations on tradeoffs. 
 
 \subsection{Data Augmentation}
-One key areas that is discovered in the generation of cutout images is that vastly more stars than galaxy are present in the dataset. So far, because equal number of each class must be preserved, a majority of stars are discarded and not used for training. This seems unsatisfactory and wasteful, therefore data augmentation was performed on the images. Data augmentation is the process of artificially increasing the amount of data available to train with. The data augmentation performed on the galaxy images. Because galaxies on the sky can appear in any orientation, the galaxy images were rotated by 90,180,270 degrees to form 3 additional images, and each of these, including the original one was reflected along one axis to form a total of 8 times more galaxy images. Given that there are now 8 times as many galaxy images as before, 8 times as many stellar images may be used. Because there is a wealth of stellar images, the increased images may be taken directly, and hence are unique images. The results of this process are detailed below.
+One key areas that is discovered in the generation of cutout images is that vastly more stars than galaxy are present in the dataset. So far, because equal number of each class must be preserved, a majority of stars are discarded and not used for training. This seems unsatisfactory and wasteful, therefore data augmentation was performed on the images. Data augmentation is the process of artificially increasing the amount of data available to train with. The data augmentation performed on the galaxy images. Because galaxies on the sky can appear in any orientation, the galaxy images were rotated by 90,180,270 degrees to form 3 additional images, and each of these, including the original one was reflected along one axis to form a total of 8 times more galaxy images. Given that there are now 8 times as many galaxy images as before, 8 times as many stellar images may be used. Because there is a wealth of stellar images, the increased images may be taken directly, and hence are unique images. The results of training using data acquired from this process are detailed below.
 \section{Results}
+In discussing the results, there are a few ways to quantify the quality of the classifier. This should be balanced against the time it takes to train the neural network which is relevant especially as the time increases to the order of days. To determine the goodness of the classifier, one should use metrics to determine how well the classifier classifies. Here, since this is a binary classifier, there are a  number of well established metrics which can be used. 
 
-\subsection{FNN}
+A confusion matrix is a matrix which groups the results of the classification into whether they are classified correctly or not. In a binary classifier, the confusion matrix has the form $CM=\begin{bmatrix}
+           TP & FP \\
+           FN & TN \\
+         \end{bmatrix}$ , where TP stands for 'True Positive', which is the number of correctly classified 'positive' datapoints---in this project, since the purpose is to find galaxies, galaxies will be assigned as 'positive' results, the opposite assignation can be done with no loss in validity and will result in a transposed version of the same matrix. TN stands for 'True Negative', which is the number of correctly classified 'negative' datapoints---here stars. FP are 'negative' datapoints which the classifiers misclassify as positive---a star which the classifier classifies as galaxies, and finally FN is the opposite---an image of a galaxy which is misclassified as a star. In general, a good classifier should have a high $\frac{tr(CM)}{\sum{CM}-tr(CM)}$, where $tr(CM)$ is the trace of the confusion matrix, and $\sum{CM}$ is the sum of all elements in the confusion matrix. In essence, this quantity is the ratio of correctly classified datapoints to incorrectly classified datapoints. From this, more metrics could be defined to better quantify the performance of the classifier. 
+         
+ One of the most common metrics used is accuracy. It is defined as 
+ \begin{equation}
+ 	ACC=\frac{TP+TN}{P+N}
+ \end{equation}
+  where P is the total number of Positive datapoints in total, and N is the total number of Negative datapoints in total. This is very intuitive as this is simply the percentage of the total amount of correct classifications. NB: A corresponding metric called the error rate is simply 1-Accuracy. Accuracy as a metric is generally good enough for most general classification purposes. However, there are cases, such as unbalanced datasets or when the purity of the prediction is important, where other metrics are important. 
+  
+  Sensitivity (or recall or true positive rate) is defined as follows
+  \begin{equation}
+  SN=\frac{TP}{P}	
+  \end{equation}
+This metric shows the fraction of correctly classified positive datapoints in all positive datapoints. This metric is important when the positive dataset is very small, such as when looking at a rare signal in a large amount of noise. 
 
-\subsection{CNN}
+  Precision (or positive predictive value) is defined as follows
+  \begin{equation}
+  PREC=\frac{TP}{TP+FP}	
+  \end{equation}
+This metric shows the fraction of correctly classified positive datapoints in all datapoints predicted as positive. This metric is important when the purity of the positive classified dataset is important.
 
-\subsubsection{CNN from scratch}
+From these 3 metrics and the confusion matrix itself, a further refinement/development of classification metrics can be developed. Matthews Correlation Coefficient is a metric which takes into account both the positive and negative classification. [cite probably original paper] It is defined thus
+\begin{equation}
+MCC = \frac{TP\times TN - FP\times FN}{\sqrt{(TP+FP)(TP+FN)(TP+FP)(TN+FN)}}	
+\end{equation}
+The Matthews Correlation Coefficient ranges from -1 to 1, where a coefficient of 1 represents a perfect classifier while a coefficient of -1 represents a classifier which assigns positive classification to all negative values and vice versa. A coefficient of 0 represents a random classifier. This coefficient has its roots in statistical theory and is related to the phi coefficient which is in turn related to the chi-squared statistic. When the confusion matrix is seen as a 2x2 contingency table, the relation is as follows
+\begin{equation}
+|MCC| = \phi = \frac{\chi^2}{n}
+\end{equation}
+where n is the total number of items in the contingency table. 
 
-\subsubsection{CNN from studying MNIST}
+The F-score is a score which only takes into consideration the positive classification. There are many F-scores, all of which are harmonic means of precision and sensitivity. [cite] It is defined as follows
+\begin{equation}
+F_\beta = \frac{(1+\beta^2)(PREC\cdot SN)}{\beta^2 \cdot PREC + SN}
+\end{equation}
+The most used F-score is the $F_1$ score. 
+\begin{equation}
+F_1 = \frac{2(PREC\cdot SN)}{PREC + SN}
+\end{equation}
+$F_1$ ranges from 0 to 1, where a score of 1 represents a classifier which classifies all positive datapoints as positive but no others. A score of 0 represents the classifier did not classify any positive datapoints as positive. As one can see, this metric only accounts for the positive classifications and neglect the negative classifications entirely. 
 
+Therefore the $F_1$ score is more appropriate when only the positive class is important---in this project, if one were only to be interested in extracting only galaxies in the image, for example. The Matthews Correlation Coefficient is important when one requires correct classifications for both classes---in this project, if one is performing a statistical study of all the stars and galaxies in the field, for example. 
+
+Below, the accuracy, $F_1$ score and the Matthew Correlation Coefficient will be tabulated below for the FNN model, the FNN model with data augmentation, the CNN model built from scratch, the CNN model from studying the MNIST model, the CNN model built from scratch with data augmented, and the CNN model from studying the MNIST model with data augmented. 
+
+
+\begin{table*}
+ \begin{tabular}{c||c c c||} 
+ \hline
+  & Accuracy & $F_1$ & Matthews Correlation Coefficient \\ [0.5ex] 
+ \hline\hline
+ FNN model & 6 & 87837 & 787 \\ 
+ \hline
+ FNN model with data augmentation & 7 & 78 & 5415 \\
+ \hline
+ CNN model built from scratch & 545 & 778 & 7507 \\
+ \hline
+ CNN model from studying the MNIST model & 545 & 18744 & 7560 \\
+ \hline
+  CNN model built from scratch with data augmented & 88 & 788 & 6344 \\
+ \hline
+ CNN model from studying the MNIST model with data augmented & 88 & 788 & 6344 \\
+ \hline
+\end{tabular}
+\end{table*}
+[insert numbers later]
 \section{Discussion and Conclusion}
 ...
 
