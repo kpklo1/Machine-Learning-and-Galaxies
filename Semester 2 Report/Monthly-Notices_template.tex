@@ -217,6 +217,7 @@ with $v$ being the new momentum parameter and $\eta$ being a new decaying hyper-
 A variant of the momentum approach is the Nesterov Accelerated Gradient (NAG). The principle is essentially the same except the algorithm calculates the momentum using past values i.e. $v_{n}$ and $v_{n-1}$ in lieu of $v_{n+1}$ and $v_{n}$ respectively as well a slightly modifying the gradient calculation. This method has a key benefit of being able to 'slow down' the momentum before it reaches the minimum of the hyperplane thereby reducing the possibility of 'overshooting'.
 
 \subsubsection{Modern Optimisers}
+\label{section:modern optimizers}
 Modern optimisers tend to use an adaptive learning rate.
 
 [liberally get citations from here https://ruder.io/optimizing-gradient-descent/index.html]
@@ -293,9 +294,9 @@ Third, non-linearly separable data should be treated with at least 2 hidden laye
 
 The FNN used in this project largely has these rules in mind when built. The FNN architecture is shown in [Figure]. As seen, the architecture has size 64,32,16 feedforward layers in sequence with all activation functions being ReLU. This gives $64\times 32+32\times 16 +16\times 1 = 2576$ trainable parameters. This is lower than the total number of images used for training (5075 images). This network has 3 hidden layers which is generally thought to be a good number of hidden layers for a general FNN classifier. 
 
-The way this FNN is trained is using a train-test split approach. This means that the total number of datapoints are split randomly into two groups, with one group being used to train the network while the other group being used to test the performance of the network. The two groups of data are kept separate to each other so the test dataset is thought to simulate unlabelled general datapoints which the neural network is applied to.
+The way this FNN is trained is using a train-test split approach. This means that the total number of datapoints are split randomly into two groups, with one group being used to train the network while the other group being used to test the performance of the network. The two groups of data are kept separate to each other so the test dataset is thought to simulate unlabelled general datapoints which the neural network is applied to. In the current application the train/test split is 0.8/0.2, meaning 80\% of the data is used to train and 20\% of the data is used to test the neural network. 
 
-Each training datapoint is first flattened from a 40$\times$40 matrix into a 1600$\times$1 vector and placed into an array with all the other datapoints. This is valid due to [some theorem]. This is then used to train the neural network. 
+Each training datapoint is first flattened from a 40$\times$40 matrix into a 1600$\times$1 vector and placed into an array with all the other datapoints. This is valid due to [some theorem]. The data is subsequently scaled using a standard scaler---this changes the range of the data using an algorithm that takes into account the standard deviation (variance) of the images. This is done because nearby objects are brighter than further objects, but the morphologies should be the same, therefore a bias should be avoided here. After preprocessing, the data is then used to train the data. 
 
 [section about keras? or is that too specific]
 
@@ -305,7 +306,7 @@ Due to the unsatisfactory of the FNN approach, a CNN based approached is designe
 \subsubsection{CNN from scratch}
 Just like in the FNN approach, the first step in using a CNN is to make one. However, there is even less guidance on how to make a good CNN due to the novelty of the field. In general, the rules from FNN still apply because CNNs can be thought of as FNNs with convolutional layers instead of feedforward layers. But due to the additional of pooling layers, the whole situation is much more complex. 
 
-For this purpose, a CNN has been constructed similar to the FNN above, but with pooling layers between the convolutional layers [Figure].
+For this purpose, a CNN has been constructed similar to the FNN above, but with pooling layers between the convolutional layers [Figure]. However, a key difference is in the data preprocessing. In the FNN model, each of the datapoints are a flattened vector and then normally scaled. However, in the CNN implementation, each datapoint is an unflattened matrix (array) with the data not scaled in any way. This lack of scaling is due to the understanding that since a CNN 'sees' morphological features such as edges and corners, it should not matter what the absolute brightness of the pixel is. 
 
 [keras is pretty much plug and play, but is the relevant]
 
@@ -316,6 +317,11 @@ Given that the CNN that was built from scratch did not provide the results that 
 There was a model found which claims to be 'the best' model for classifying the MNIST dataset. This was easily modified to apply to the current project. 
 
 Of note in that model was that, where one would expect a pooling layer, there was a convolutional layer with stride length 2. It is not immediately obvious why that would yield better results, but it is speculated that since pooling layers represent only dimension reduction without allowing for any training on the inputs/outputs, this stride length increased convolutional layer allows for dimension reduction while also increasing the number of trainable parameters. This comes, however, at the expense of requiring more calculation time. This is not an issue so far, however, because training times are on the order of 2 hours on the current hardware and dataset. Larger datasets and different hardware may well require different considerations on tradeoffs. 
+
+\subsubsection{Optimisers}
+There are a variety of optimisers available for selection within the neural network package used. Because most modern implementations of neural neural networks use some kind of adaptive gradient, initially AdaDelta was chosen as the optimiser. However, the accuracy reached using AdaDelta was not as good expected, therefore the Adam optimiser was used instead. This yielded good results, but also would occasionally return meaningless results of 50\% accuracy---50\% accuracy means a classifier which does no better than random chance. The reason for this is probably due to the momentum aspect of Adam---i.e. it accumulates too much momentum and doesn't manage to stop in the minimum. However, the solution to this, as described in the above section \ref{section:modern optimizers}, a solution which was a modification to the Adam algorithm---AMSgrad was released in 2018. This modification is also implemented in the neural network packaged used hence it was directly used. The result is that the neural networks using Adam and AMSgrad all converge, and contrary to some preliminary findings, there was no appreciable decrease in performance (convergence time). 
+
+The neural networks were trained for 1024 epochs, with a batch size of 32. This means that each batch includes 32 images and the whole dataset was 'run through' 1024 times for the duration of the training. 
 
 \subsection{Data Augmentation}
 One key areas that is discovered in the generation of cutout images is that vastly more stars than galaxy are present in the dataset. So far, because equal number of each class must be preserved, a majority of stars are discarded and not used for training. This seems unsatisfactory and wasteful, therefore data augmentation was performed on the images. Data augmentation is the process of artificially increasing the amount of data available to train with. The data augmentation performed on the galaxy images. Because galaxies on the sky can appear in any orientation, the galaxy images were rotated by 90,180,270 degrees to form 3 additional images, and each of these, including the original one was reflected along one axis to form a total of 8 times more galaxy images. Given that there are now 8 times as many galaxy images as before, 8 times as many stellar images may be used. Because there is a wealth of stellar images, the increased images may be taken directly, and hence are unique images. The results of training using data acquired from this process are detailed below.
@@ -367,7 +373,7 @@ $F_1$ ranges from 0 to 1, where a score of 1 represents a classifier which class
 
 Therefore the $F_1$ score is more appropriate when only the positive class is important---in this project, if one were only to be interested in extracting only galaxies in the image, for example. The Matthews Correlation Coefficient is important when one requires correct classifications for both classes---in this project, if one is performing a statistical study of all the stars and galaxies in the field, for example. 
 
-Below, the accuracy, $F_1$ score and the Matthew Correlation Coefficient will be tabulated below for the FNN model, the FNN model with data augmentation, the CNN model built from scratch, the CNN model from studying the MNIST model, the CNN model built from scratch with data augmented, and the CNN model from studying the MNIST model with data augmented. 
+Below, the accuracy, $F_1$ score and the Matthew Correlation Coefficient will be tabulated below for the FNN model, the FNN model with data augmentation, the CNN model built from scratch, the CNN model from studying the MNIST model, the CNN model built from scratch with data augmented, and the CNN model from studying the MNIST model with data augmented. See Table \ref{table:results}.
 
 
 \begin{table*}
@@ -375,23 +381,46 @@ Below, the accuracy, $F_1$ score and the Matthew Correlation Coefficient will be
  \hline
   & Accuracy & $F_1$ & Matthews Correlation Coefficient \\ [0.5ex] 
  \hline\hline
- FNN model & 6 & 87837 & 787 \\ 
+ FNN model & placeholder & placeholder & placeholder \\ 
  \hline
- FNN model with data augmentation & 7 & 78 & 5415 \\
+ FNN model with data augmentation & placeholder & placeholder & placeholder \\
  \hline
- CNN model built from scratch & 545 & 778 & 7507 \\
+ CNN model built from scratch & placeholder & placeholder & placeholder \\
  \hline
- CNN model from studying the MNIST model & 545 & 18744 & 7560 \\
+ CNN model from studying the MNIST model & placeholder & placeholder & placeholder \\
  \hline
-  CNN model built from scratch with data augmented & 88 & 788 & 6344 \\
+  CNN model built from scratch with data augmented & placeholder & placeholder & placeholder \\
  \hline
- CNN model from studying the MNIST model with data augmented & 88 & 788 & 6344 \\
+ CNN model from studying the MNIST model with data augmented & placeholder & placeholder & placeholder \\
  \hline
 \end{tabular}
+\caption{Table of results gained from the 6 different configurations of models used. Accuracy $F_	1$ score and Matthews Correlation Coefficient given. \label{table:results}}
 \end{table*}
 [insert numbers later]
-\section{Discussion and Conclusion}
-...
+\section{Discussion}
+These results indicate that the CNN models are clearly superior to the FNN models at classifying images, which is expected. However, models trained on augmented data seem to perform worse across the board in comparison to models not. This may be because the act of augmenting data does not actually increase the variance (amount of information in the images) in the galaxy images. Therefore, with the increase in total amount of data, the network is not expected to perform as well. However, the difference is not conclusively separated from statistical variance. However, using augmented data means increasing the amount of data trained by 8 times, which correspondingly increases training time. Therefore, augmenting one class of data to train is generally inadvisable. A better approach would be to assign different weighting to training each class which would enable the use of unbalanced datasets. However this would increase the complexity of the code somewhat. 
+
+Another thing of note here is that the $F_1$ score and Matthews Correlation Coefficient seems to vary together in each dataset and model. This indicates that no one model is especially suited to extracting galaxies which is a speculative use for a model like this. 
+
+The threshold for this model is set at 0.5. On deeper inspection, it is found that the model tends to yield very extreme results. [see inserted diagram] This means that moving the threshold would not be very useful in increasing the precision in detecting galaxies. This means that to improve this model, it is not as simple as moving the threshold. 
+
+[insert diagram of probabilities] 
+
+Ultimately, in the best case result, the model yields a classification accuracy of 95\% and a Matthews Correlation Coefficient in the region of 80\%. This is not good enough for doing catalogue classification as there are a sizeable portion of impurities in both classifications. However, this shows that neural networks currently are good to use as tool for performing a 'first-pass' approach towards new datasets because this weeds out a great majority of incorrect datapoints. If a purer sample is required, one simply has to select from the classes given by the classifier because the datasets after classification is much denser in the desired class. An practical example is that if one were to want to study galaxies, after classification by this neural network, one only has to select galaxies from the galaxy class in this neural network. This is much easier than selecting from the overall dataset because the dataset is much small here and also much closer to a pure sample so one has to examine a much smaller number of images to reach the desired number of samples. 
+
+\subsection{Future Improvements}
+A key source of possible improvement is adding more data to train the model. At the moment, there is no lack of data, since data the data required to train the model is simply images which is captured by GOTO, but also in the SDSS catalogues. The overlap of these datasets are quite large and so there is no lack of data here. 
+
+A concern at large datasets, however, is a memory problem. Since computers have finite RAM, at large datasets, the size of the dataset would frequently exceed the RAM of a regular computer. The train-test split approach relies on loading the entire dataset into RAM before performing operations on it. This would not work if the dataset exceeds RAM size. In research applications, the hardware is usually either processing speed bound (CPU and GPU are limitation, while RAM is effectively unlimited), or memory bound (RAM is limited, while processing power is very high, usually by way of CPUs with very high core counts). In processor-bound applications, the train-test split is appropriate because RAM is faster than loading from disk and has the benefit of knowing what the entire dataset looks like beforehand and therefore allows for some preprocessing. In memory-bound applications however, the train-test split does not work and instead an alternative method must be sought. A popular method for image recognition is the dataloader approach. [cite] This approach only retrieves images which are needed for the specific training batch and therefore the memory requirements are much smaller, but has a trade off of requiring much more processing power as well as needing a fast storage medium. 
+
+With respect to the network architecture, the exact architecture that is best for the dataset varies per dataset. It is highly unlikely that any of the architectures used in this project is the optimal one. To determine the best network architecture, either a manual approach is needed to tune the hyperparameters of the system. This frequently entails using a validation set data. Since, the MNIST model was used directly, this process was omitted but probably have yielded some improvement in performance. This process is highly time consuming as the model needs to be retrained over each iteration of the network architecture. Some very new packages such as Google's AutoML [cite], and the open source AutoKeras [cite] have this training functionality inbuilt. But due to package incompatibility issues which are unresolvable until a new patch is released, this path could not be explored, but in the future this may well be the way forward. 
+
+[insert some numbers with literature to compare?]
+
+\section{Conclusion}
+This project proves the viability of using a neural network classify to assist in the work of survey astronomy. An example of how this neural network could be implemented is provided. In the future, it may be possible to completely automate the classification process in catalogues, but this is not possible at the current stage. This project also illustrates the challenges in this area frequently lie in issues yielding labeled data instead of the actual usage of that data. Once labeled data is created, extant computer science techniques are readily available to be applied to this data to create a classifier. 
+
+\pagebreak
 
 
 
@@ -640,11 +669,25 @@ Student \textit{registration number}, 2019, PHY480 Semester~1 Report, University
 
 \section{Semester One Project Plan}
 \label{App:project plan}
-Appendix A  should be identical to the project plan from your semester~I report. 
+\subsection{Postage Stamp Cutout}
+Small 'postage stamp' cutouts from the large image are required to train SVMs. This requires that the previous source detection algorithm is functional. I believe this will take up to 10 hours. 
+\subsection{Cross-Referencing Data}
+After a satisfactory set of postage stamps is acquired, the cutouts need to be cross referenced with existing sky surveys to identify known objects to use as a training set. For now, the plan is to use SDSS to be the primary catalogue of reference. This should take up to 10 hours.
+\subsection{PCA}
+Performing a PCA on the data should be straightforwardly applying the algorithm. The issue is computing time, but I don't foresee this taking a vast amount of that either. I will allocate 5 hours to this for the time being.
+\subsection{SVM and Kernal SVM}
+Once the PCA is complete, a simple SVM can be performed, either using packaged algorithms or self-written ones. The limiting factor here is also computing time since an SVM algorithm is quite straight-forward to write.
+Once that is complete, a kernal-SVM algorithm will be attempted. However since this is quite complex, a packaged solution will probably be used. I foresee many potential issues with trying this so I would allocate a total of 25 hours for this section.
+\subsection{CNN}
+After the SVM/PCA method is completed, a CNN will be attempted. Since the allure of a CNN is that it does not require the cutting out of postage stamps, that will be the first choice. However, it is still difficult to see how to properly make a training set for CNN this way. Further, many refinements would be necessary for a CNN, and training each iteration will be very time intensive. Therefore, I will conservatively estimate that 60 hours will be needed.
+\subsection{Report}
+After the project proper is finished, the report will be written. I expect some 10-20 hours will be spent on report writing.
+\subsection{Other areas}
+If there is any time to spare, other possible areas of work would be to make a Feedforward Neural Network and compare the results to kSVM. Otherwise, if the project proceeds vastly better than expected, an attempt to classify galaxies can be done.
 
 \section{Effect of industrial action and coronavirus}
 \label{2020 special}
-Please give a statement in this appendix of the effect of the industrial action and coronavirus on your project. There is no word limit. If there was no significant effect, just write something like ``The industrial action and coronavirus had no significant effect on my project.''
+The coronavirus epidemic meant that I traveled back to my home country of Hong Kong in late March. When I arrived, I was subject to 14 days of home quarantine with no broadband internet. However, this was mitigated somewhat by using mobile data, but was not idea. This also meant that project meetings needed to be scheduled at night time here, but this was by no means insurmountable. The coronavirus which also meant that the PhD student had pulled the GOTO data and placed it online is subsequently unavailable, hence only 32 GOTO images was used to train the data and exploring increasing the dataset was impossible. 
 
 
 \section{Other stuff}
