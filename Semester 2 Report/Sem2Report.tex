@@ -304,9 +304,14 @@ The area is a measure of the area of sky covered by the source, it has units of 
 
 
 \subsubsection{Data Cleaning}
-Before the sources can be cut out individually, it is important that as many non-objects i.e. artefacts, be excluded from the extraction. This is done by excluding any source with elongation above 10. This number is a rough estimate to exclude any source which is clearly an artefact [image of streaky lines], but not too low as to exclude highly elongated sources, especially galaxies. 
+Before the sources can be cut out individually, it is important that as many non-objects i.e. artefacts, be excluded from the extraction. This is done by excluding any source with elongation above 10. This number is a rough estimate to exclude any source which is clearly an artefact (See Fig.~\ref{fig:Examplefit}), but not too low as to exclude highly elongated sources, especially galaxies. 
 
 Another aspect of the data that needs to be cleaned is that by observation of the image, there is a smearing at the edges of the image which elongates sources. This yields subpar samples to train with and therefore it is beneficial to exclude these sources. Therefore all sources which have centroids within 400 pixels within the left and right edges and within 300 pixels within the top and bottom of the image are excluded. 300 or 400 pixels are arbitrary numbers but they are approximately 5\% of the total sizes in either dimension. This means that approximately 10\% of the sources in either dimension are excluded this way. 
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{../Figures/Examplefit}
+\caption{This is an example of an original image taken from GOTO. Note that the edges of the images show some smearing of the objects. There are also some streaks which are artefacts of the telescope. These must be removed in the data cleaning stage of processing the image. Also note that the brightest objects in the image are stars and galaxies are hardly seen at all. \label{fig:Examplefit}}
+\end{figure}
 
 \subsubsection{Database Matching}
 Since labeled data is required for the training of the neural network, these labels must be acquired from a source external to the algorithm. In this project, labels are acquired from the SDSS database. 
