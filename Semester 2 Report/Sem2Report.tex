@@ -102,7 +102,7 @@ It should be a single paragraph, and no references should appear in the abstract
 
 A key issue regarding modern day survey astronomy is the sheer amount of data available. The first step given any survey imagery is to determine which objects are of interest, and which are not. Previously this would be a very time consuming process of manual selection. With the advent of machine learning, a very real possibility of using a computer to perform this task arose. 
 
-Historically a need existed to classify astronomical object, from distinguishing between types of stars \cite{HarvardClassification} to different types of nebulae \cite{Nebulae} and later galaxies \cite{Hubble}. This process was usually very labor intensive and involved the time of many a grad student. That changed in the latter part of the 20th century. Starting with applying the AutoClass algorithm to the IRAS catalogue in 1988\cite{adorf_1988_supervised}, astronomers started using computers to solve this classification problem using machines.
+Historically a need existed to classify astronomical object, from distinguishing between types of stars \cite{HarvardClassification} to different types of nebulae \cite{Nebulae} and later galaxies \cite{Hubble}. This process was usually very labor intensive and involved the time of many a grad student. That changed in the latter part of the 20th century. Starting with applying the AutoClass algorithm to the IRAS catalogue in 1988 \cite{adorf_1988_supervised}, astronomers started using computers to solve this classification problem using machines.
 
 Early methods for this involved selecting features manually and separating the feature-selected variables into classes. This however, was still quite labor-intensive and did not solve the fundamental problem which was human bias. Human bias exists within these kinds of methods because the features selected are often based on the understanding of the researchers themselves. Therefore any feature selected may be the tainted by the human selection of variables. An example of this was \cite{Abraham2000}, where they extracted features of galaxies which were based on their understanding---the features were early/late-type galaxies based on the Hubble sequence, and the strength of the central bar. While this report does not seek to discredit that paper, one should have a certain expectation that the results from this would then correspond to the Hubble 'tuning-fork' diagram due to the parameters selected---which it does. 
 
@@ -204,7 +204,7 @@ In a general form, the equation for gradient descent is
 \begin{equation}
 \theta_{n+1}=\theta_{n}-\alpha\nabla J(\theta)	
 \end{equation}
-where $\theta$ is a general set of weights applied at any particular node. $\theta_{n}$ is the set of weights before updating while $\theta_{n+1}$ is that after updating. $\alpha$ is a variable called the learning rate, which controls how 'far' in any one direction one update moves the weights on the hypersurface. $\nabla J$ is the key term here as this is the gradient of the cost(loss) function over all variables which ensures all the weights for the variables are updated in the same pass. [probably cite the Stanford course]
+where $\theta$ is a general set of weights applied at any particular node. $\theta_{n}$ is the set of weights before updating while $\theta_{n+1}$ is that after updating. $\alpha$ is a variable called the learning rate, which controls how 'far' in any one direction one update moves the weights on the hypersurface. $\nabla J$ is the key term here as this is the gradient of the cost(loss) function over all variables which ensures all the weights for the variables are updated in the same pass. \cite{GradientDescent}
 
 \subsubsection{Stochastic Gradient Descent}
 Stochastic Gradient Descent (SGD) is an algorithm which chooses a random datapoint within the whole dataset to perform the gradient descent algorithm. This was developed due to the need to train larger and larger datasets. Larger datasets present a challenge due to the longer time it takes to calculate losses through the entire dataset, at some point large datasets present a hardware constraint of not having enough RAM to store the entire dataset in memory which makes gradient descent through the whole dataset unworkable. 
@@ -320,6 +320,34 @@ The cutout algorithm is astropy's \texttt{Cutout2D}. The algorithm makes cutouts
 The same procedure is completed for stars instead of galaxies with the results being stored in a dedicated stars folder. 
 
 This part of the algorithm appears to be highly multithreaded. Using an 8-core Intel core-i9 9900HK running at 3.6GHz, it takes approximately 45 seconds for the algorithm to cut out each original image while it takes a 4-core Intel core-i7 6920HQ running 2.9GHz around 95 seconds on average. While there are some overhead losses, the performance seems to almost double with a doubling of the cores.
+
+ \begin{figure}
+
+ \begin{subfigure}{0.5\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/GalaxyExample} 
+ \caption{Clear Galaxy}
+ \label{fig:Galaxy1}
+ \end{subfigure}
+ \begin{subfigure}{0.5\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/StarExample}
+ \caption{Clear Star}
+ \label{fig:Star1}
+ \end{subfigure}
+ \begin{subfigure}{0.5\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/GalaxyExample2}
+ \caption{Unclear Galaxy}
+ \label{fig:Galaxy2}
+ \end{subfigure}
+  \begin{subfigure}{0.5\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/StarExample2}
+ \caption{Unclear Star}
+ \label{fig:Star2}
+ \end{subfigure}
+
+ \caption{A selection of the cutouts made from the cutout algorithm. Some objects, such as Fig.~\ref{fig:Galaxy1} and a lesser extent Fig.~\ref{fig:Star1} are clearly objects of their own classes. In particular Fig.~\ref{fig:Galaxy1} is clearly a galaxy (probably a spiral one at that) due to its central brightness and disky diffuse characteristic. However, Fig.~\ref{fig:Galaxy2} and Fig.~\ref{fig:Star2} are less clear in this regard. Fig.~\ref{fig:Galaxy2} seems that it could be just as well a point source and therefore a star and Fig.~\ref{fig:Star2} seems to be extended in appearance giving the impression of merging galaxies. However, they are a galaxy and a star respectively. This highlights the difficulty of classifying astronomical objects from morphology.}
+ \label{fig:Examples}
+ \end{figure}
+ 
 \subsection{FNN}
 The first step in making a neural network of any kind is to determine the network architecture. The network architecture is a description of the 'shape' of the neural network. The network architecture describes how many layers, and what type of layers exist between the input and output. It also describes the size of each layer---i.e. how many neuron/nodes a layer has. 
 
@@ -361,6 +389,23 @@ Given that the CNN that was built from scratch did not provide the results that 
 There was a model found which claims to be 'the best' model for classifying the MNIST dataset. This was easily modified to apply to the current project. 
 
 Of note in that model was that, where one would expect a pooling layer, there was a convolutional layer with stride length 2. It is not immediately obvious why that would yield better results, but it is speculated that since pooling layers represent only dimension reduction without allowing for any training on the inputs/outputs, this stride length increased convolutional layer allows for dimension reduction while also increasing the number of trainable parameters. This comes, however, at the expense of requiring more calculation time. This is not an issue so far, however, because training times are on the order of 2 hours on the current hardware and dataset. Larger datasets and different hardware may well require different considerations on tradeoffs. 
+
+ \begin{figure*}
+
+ \begin{subfigure}{0.8\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_model_self} 
+ \caption{CNN made from scratch}
+ \label{fig:ScratchCNN}
+ \end{subfigure}
+ \begin{subfigure}{0.8\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_model}
+ \caption{CNN referencing the MNIST Kaggle CNN}
+ \label{fig:MNISTCNN}
+ \end{subfigure}
+
+\caption{These are the CNN architectures used within the project. Fig.~\ref{fig:ScratchCNN} represents the architecture made from scratch. Note the use of pooling layers in between convolutional layers. These pooling layers are used to reduce the dimensionality of the data, thereby reducing the computation time. Fig.~\ref{fig:MNISTCNN} represents the architecture used in the MNIST Kaggle CNN. Note the absence of pooling layers. It can be said that the pooling layers in this case are replaced with more convolutional layers. At certain layers, namely \texttt{conv2d\_3} and \texttt{conv2d\_6}, the output dimensions drop by approximately half compared to the input dimensions. This looks similar to the pooling layers in Fig.~\ref{fig:ScratchCNN} but are in fact convolutional layers with a stride length of 2. This means that the convolutional filter skips over every other pixel in the process of convolution, thereby forming a convolutional image on the order of half the input image. This also has the effect of a layer which reduces the dimensionality, but also allows the layer's connections to be trained. This means that the number of trainable parameters are increased in this model but also calls for longer computational time. \label{fig:CNNArchitecture}}
+ 
+ \end{figure*}
 
 \subsubsection{Optimisers}
 There are a variety of optimisers available for selection within the neural network package used. Because most modern implementations of neural neural networks use some kind of adaptive gradient, initially AdaDelta was chosen as the optimiser. However, the accuracy reached using AdaDelta was not as good expected, therefore the Adam optimiser was used instead. This yielded good results, but also would occasionally return meaningless results of 50\% accuracy---50\% accuracy means a classifier which does no better than random chance. The reason for this is probably due to the momentum aspect of Adam---i.e. it accumulates too much momentum and doesn't manage to stop in the minimum. However, the solution to this, as described in the above section \ref{section:modern optimizers}, a solution which was a modification to the Adam algorithm---AMSgrad was released in 2018. This modification is also implemented in the neural network packaged used hence it was directly used. The result is that the neural networks using Adam and AMSgrad all converge, and contrary to some preliminary findings, there was no appreciable decrease in performance (convergence time). 
@@ -436,26 +481,31 @@ Below, the accuracy, $F_1$ score and the Matthew Correlation Coefficient will be
  CNN model from studying the MNIST model with data augmented & 93.926\% & 93.798\% & 87.935\% \\
  \hline
 \end{tabular}
-\caption{Table of results gained from the 6 different configurations of models used. Accuracy $F_	1$ score and Matthews Correlation Coefficient given. \label{table:results}}
+\caption{Table of results gained from the 5 different configurations of models used. Accuracy $F_	1$ score and Matthews Correlation Coefficient given. Note that $F_1$ Score and Matthews Correlation Coefficient are not usually given in \%, but usually in decimal---i.e. 0.9 rather than 90\% because they are not fractions of a whole. But to unify the representation, they have been converted to \%. The underlying meaning should be clear. Matthews Correlation Coefficient and $F_1$ Score should not be directly compared because, first, the range of the Matthews Correlation Coefficient is twice that of $F_1$ score, and second, the two metrics are measuring different things which are not directly related. The accuracy is the most often cited metric to compare, but it is more fruitful to compare either the Matthews Correlation Coefficient or the $F_1$ Score depending on the purpose of the classifier. The results indicate that augmented data is better than non-augmented data, and that CNNs are more fit for purpose than FNNs. \label{table:results}}
 \end{table*}
-[insert numbers later]
 \section{Discussion}
-These results indicate that the CNN models are clearly superior to the FNN models at classifying images, which is expected. However, models trained on augmented data seem to perform worse across the board in comparison to models not. This may be because the act of augmenting data does not actually increase the variance (amount of information in the images) in the galaxy images. Therefore, with the increase in total amount of data, the network is not expected to perform as well. However, the difference is not conclusively separated from statistical variance. However, using augmented data means increasing the amount of data trained by 8 times, which correspondingly increases training time. Therefore, augmenting one class of data to train is generally inadvisable. A better approach would be to assign different weighting to training each class which would enable the use of unbalanced datasets. However this would increase the complexity of the code somewhat. 
+These results indicate that the CNN models are clearly superior to the FNN models at classifying images, which is expected. However, models trained on augmented data seem to perform worse across the board in comparison to models not. The models trained on augmented data seem to outperform the models trained on non-augmented data by about 1\%. This minor increase in performance is probably due to the fact that augmenting data does not actually increase the variance (amount of information in the images) in the galaxy images. However, the difference is not conclusively separated from statistical variance as there is some inherent randomness between models-runs because the initial seed is different. However, using augmented data means increasing the amount of data trained by 8 times, which correspondingly increases training time. Therefore, augmenting one class of data to train is generally inadvisable. A better approach would be to assign different weighting to training each class which would enable the use of unbalanced datasets. However this would increase the complexity of the code somewhat. 
+
+
 
 Another thing of note here is that the $F_1$ score and Matthews Correlation Coefficient seems to vary together in each dataset and model. This indicates that no one model is especially suited to extracting galaxies which is a speculative use for a model like this. 
 
-The threshold for this model is set at 0.5. On deeper inspection, it is found that the model tends to yield very extreme results. [see inserted diagram] This means that moving the threshold would not be very useful in increasing the precision in detecting galaxies. This means that to improve this model, it is not as simple as moving the threshold. 
+The threshold for this model is set at 0.5. On deeper inspection, it is found that the model tends to yield very extreme results. See Fig.~\ref{fig:probability} This means that moving the threshold would not be very useful in increasing the precision in detecting galaxies. This means that to improve this model, it is not as simple as moving the threshold. 
 
-[insert diagram of probabilities] 
+\begin{figure}
+\includegraphics[width=\columnwidth]{../Figures/probability}
+\caption{The resulting probabilities are very extreme. The vast majority of the probabilities are close to 0---prediction of a star, or close to 1---prediction of a galaxy. NB: The scale is a logarathimic scale which shows how pronounced the peaks are. This makes it difficult to make any kind of progress by simply moving the threshold. Therefore, the threshold is set at 0.5, but it would not make a large difference whether it is any number from 0.2 to 0.8. \label{fig:probability}}
+\end{figure}
 
-Ultimately, in the best case result, the model yields a classification accuracy of 95\% and a Matthews Correlation Coefficient in the region of 80\%. This is not good enough for doing catalogue classification as there are a sizeable portion of impurities in both classifications. However, this shows that neural networks currently are good to use as tool for performing a 'first-pass' approach towards new datasets because this weeds out a great majority of incorrect datapoints. If a purer sample is required, one simply has to select from the classes given by the classifier because the datasets after classification is much denser in the desired class. An practical example is that if one were to want to study galaxies, after classification by this neural network, one only has to select galaxies from the galaxy class in this neural network. This is much easier than selecting from the overall dataset because the dataset is much small here and also much closer to a pure sample so one has to examine a much smaller number of images to reach the desired number of samples. 
+
+Ultimately, in the best case result, the model yields a classification accuracy of 94\% and a Matthews Correlation Coefficient in the region of 88\%. This is not good enough for doing catalogue classification as there are a sizeable portion of impurities in both classifications. However, this shows that neural networks currently are good to use as tool for performing a 'first-pass' approach towards new datasets because this weeds out a great majority of incorrect datapoints. If a purer sample is required, one simply has to select from the classes given by the classifier because the datasets after classification is much denser in the desired class. An practical example is that if one were to want to study galaxies, after classification by this neural network, one only has to select galaxies from the galaxy class in this neural network. This is much easier than selecting from the overall dataset because the dataset is much small here and also much closer to a pure sample so one has to examine a much smaller number of images to reach the desired number of samples. 
 
 \subsection{Future Improvements}
 A key source of possible improvement is adding more data to train the model. At the moment, there is no lack of data, since data the data required to train the model is simply images which is captured by GOTO, but also in the SDSS catalogues. The overlap of these datasets are quite large and so there is no lack of data here. 
 
 A concern at large datasets, however, is a memory problem. Since computers have finite RAM, at large datasets, the size of the dataset would frequently exceed the RAM of a regular computer. The train-test split approach relies on loading the entire dataset into RAM before performing operations on it. This would not work if the dataset exceeds RAM size. In research applications, the hardware is usually either processing speed bound (CPU and GPU are limitation, while RAM is effectively unlimited), or memory bound (RAM is limited, while processing power is very high, usually by way of CPUs with very high core counts). In processor-bound applications, the train-test split is appropriate because RAM is faster than loading from disk and has the benefit of knowing what the entire dataset looks like beforehand and therefore allows for some preprocessing. In memory-bound applications however, the train-test split does not work and instead an alternative method must be sought. A popular method for image recognition is the dataloader approach. [cite] This approach only retrieves images which are needed for the specific training batch and therefore the memory requirements are much smaller, but has a trade off of requiring much more processing power as well as needing a fast storage medium. 
 
-With respect to the network architecture, the exact architecture that is best for the dataset varies per dataset. It is highly unlikely that any of the architectures used in this project is the optimal one. To determine the best network architecture, either a manual approach is needed to tune the hyperparameters of the system. This frequently entails using a validation set data. Since, the MNIST model was used directly, this process was omitted but probably have yielded some improvement in performance. This process is highly time consuming as the model needs to be retrained over each iteration of the network architecture. Some very new packages such as Google's AutoML [cite], and the open source AutoKeras [cite] have this training functionality inbuilt. But due to package incompatibility issues which are unresolvable until a new patch is released, this path could not be explored, but in the future this may well be the way forward. 
+With respect to the network architecture, the exact architecture that is best for the dataset varies per dataset. It is highly unlikely that any of the architectures used in this project is the optimal one. To determine the best network architecture, either a manual approach is needed to tune the hyperparameters of the system. This frequently entails using a validation set data. Since, the MNIST model was used directly, this process was omitted but probably have yielded some improvement in performance. This process is highly time consuming as the model needs to be retrained over each iteration of the network architecture. Some very new packages such as Google's AutoML \cite{AutoML}, and the open source AutoKeras \cite{AutoKeras} have this training functionality inbuilt. But due to package incompatibility issues which are unresolvable until a new patch is released, this path could not be explored, but in the future this may well be the way forward. 
 
 [insert some numbers with literature to compare?]
 
