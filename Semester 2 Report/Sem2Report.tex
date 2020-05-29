@@ -330,7 +330,7 @@ The data used in this project was preprocessed using the LSST stack. The steps i
 \item Comparison to the previous images to determine if the sources have changed
 \end{itemize}
 
-The exact way the data is processed is detailed in [insert paper]. 
+The exact way the data is processed is detailed in \citet{Hypercam} and \citet{GOTOLSST}. 
 
 
 
@@ -612,25 +612,7 @@ In the field of survey astronomy, there is some interest in using unsupervised a
 \section{Conclusion}
 This project proves the viability of using a neural network classify to assist in the work of survey astronomy. An example of how this neural network could be implemented is provided. In the future, it may be possible to completely automate the classification process in catalogues, but this is not possible at the current stage. This project also illustrates the challenges in this area frequently lie in issues yielding labeled data instead of the actual usage of that data. Once labeled data is created, extant computer science techniques are readily available to be applied to this data to create a classifier. Machine classifications of survey astronomy images is an eminently feasible endeavour, with machine classifications of catalogue objects not too far in the future. This has the possibility of drastically increasing the possible size of catalogues because one of the most time consuming steps has been automated.
 
-\pagebreak
-
-\section{Submitting the report}
-
-% Hard copy submissions are not possible in 2020
-% The following text is kept for use next year.
-%You should submit \textbf{three} printed copies of your report together with your lab-book by Friday of week 12 of the Second Semester. Your printed reports should be mounted in the plastic binders that can be collected from F10.  
-%The electronic version of your report should be submitted at the same time as the printed copies.
-
-You should submit your report electronically using the Turnitin anti-plagiarism portal of PHY480 by \textbf{Friday of week 12 of Semester~II} (29th May). Please name your file: ``XXXXXXXXX-PHY480-report'', where ``XXXXXXXXX'' is your registration number. You should make sure that you comply stringently with the University's plagiarism guidelines \citep{plagiarism}. Note that minor changes to the original wording do not constitute a defence against accusations of plagiarism. If you are uncertain about any aspects of  plagiarism, please look up the on-line tutorials provided by the library \citep{Referencing}. 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
+Over the course of conducting this project, a number of pitfalls which have been found are that software compatibility is a vital aspect of any coding task. Most of the time spent on working on high level code (such as what Keras provides), is whether the package works in your existing environment and what methods can be used to harmonise them. Another aspect of working with high level code is that often, if something fails to work as one intends, there is no easy fix because the root cause is buried within the lower level implementation which working with the higher level code seeks to avoid. A prime example of this would be the GPU implementation of Keras---since Keras relies on Tensorflow (in this project) as its backend, the Keras GPU implementation is actually the Tensorflow implementation. If that fails to work, then the code which is possibly faulty lies in the Tensorflow source code, which is written in very complex C++. However, overall, working with high level code is an easily accessible way for non-computer scientists to access the tools of machine learning, hence, the prospects of machine learning in astronomy should only grow over time. 
 
 % References
 %
@@ -656,33 +638,72 @@ You should submit your report electronically using the Turnitin anti-plagiarism 
 
 \section{Semester One Project Plan}
 \label{App:project plan}
-\subsection{Postage Stamp Cutout}
+\subsubsection{Postage Stamp Cutout}
 Small 'postage stamp' cutouts from the large image are required to train SVMs. This requires that the previous source detection algorithm is functional. I believe this will take up to 10 hours. 
-\subsection{Cross-Referencing Data}
+\subsubsection{Cross-Referencing Data}
 After a satisfactory set of postage stamps is acquired, the cutouts need to be cross referenced with existing sky surveys to identify known objects to use as a training set. For now, the plan is to use SDSS to be the primary catalogue of reference. This should take up to 10 hours.
-\subsection{PCA}
+\subsubsection{PCA}
 Performing a PCA on the data should be straightforwardly applying the algorithm. The issue is computing time, but I don't foresee this taking a vast amount of that either. I will allocate 5 hours to this for the time being.
-\subsection{SVM and Kernal SVM}
+\subsubsection{SVM and Kernal SVM}
 Once the PCA is complete, a simple SVM can be performed, either using packaged algorithms or self-written ones. The limiting factor here is also computing time since an SVM algorithm is quite straight-forward to write.
 Once that is complete, a kernal-SVM algorithm will be attempted. However since this is quite complex, a packaged solution will probably be used. I foresee many potential issues with trying this so I would allocate a total of 25 hours for this section.
-\subsection{CNN}
+\subsubsection{CNN}
 After the SVM/PCA method is completed, a CNN will be attempted. Since the allure of a CNN is that it does not require the cutting out of postage stamps, that will be the first choice. However, it is still difficult to see how to properly make a training set for CNN this way. Further, many refinements would be necessary for a CNN, and training each iteration will be very time intensive. Therefore, I will conservatively estimate that 60 hours will be needed.
-\subsection{Report}
+\subsubsection{Report}
 After the project proper is finished, the report will be written. I expect some 10-20 hours will be spent on report writing.
-\subsection{Other areas}
+\subsubsection{Other areas}
 If there is any time to spare, other possible areas of work would be to make a Feedforward Neural Network and compare the results to kSVM. Otherwise, if the project proceeds vastly better than expected, an attempt to classify galaxies can be done.
 
+\subsection{Review on Project Plan}
+Overall, the project achieved what it set out to achieve---make a classifier to distinguish stars and galaxies. The amount of time spent on each section changed greatly compared to the project plan. The postage stamp and cross referencing data section of the plan took up to 60 hours of work to complete. This was a vast underestimation of the time it takes to complete this. At the same time, however, it was a trivial task to do once the method to do so was established. The extra time spent meant that the PCA and SVM plans had to be removed completely and work began on an FNN. 
+
+The FNN took over 10 hours to complete and didn't have the desired effect, therefore the focus changed to CNNs which was part of the initial plan. The CNN took a long time, mostly due to the long training times of the CNN as well as software bugs and glitches. The CNN section of the project took up to 100 hours of my time.
+
+In terms of software issues, I ran into multiple instances where my GPU would not be detected and there's nothing I could do except uninstall and reinstall my entire Anaconda python which was both laborious and time consuming (somewhat due to slow internet). I also ran into multiple instances where a certain package would not work on windows and therefore I had to create some of my graphics on another machine which was another timesink. Finally, a software update in the middle of the project rendered some of the vital packages unusable. This, in particular, was only solved by uninstalling and reinstalling an old version of Anaconda from scratch. Overall, the most unexpected time loss went to these software issues. I believe most of them could be mitigated with working in a virtual environment, but at the time it seemed more trouble than it was worth. 
+
+Finally, the report took substantially longer than 10-20 hours, in fact, report writing took, on the order of 45-50 hours. This meant that there was no time to explore making a CNN which distinguished between spiral and elliptical galaxies as was a stretch goal in the plan.
 \section{Effect of industrial action and coronavirus}
 \label{2020 special}
-The coronavirus epidemic meant that I traveled back to my home country of Hong Kong in late March. When I arrived, I was subject to 14 days of home quarantine with no broadband internet. However, this was mitigated somewhat by using mobile data, but was not idea. This also meant that project meetings needed to be scheduled at night time here, but this was by no means insurmountable. The coronavirus which also meant that the PhD student had pulled the GOTO data and placed it online is subsequently unavailable, hence only 32 GOTO images was used to train the data and exploring increasing the dataset was impossible. 
+The coronavirus epidemic meant that I traveled back to my home country of Hong Kong in late March. When I arrived, I was subject to 14 days of home quarantine with no broadband internet. However, this was mitigated somewhat by using mobile data, but was not ideal. This also meant that project meetings needed to be scheduled at night time here, but this was by no means insurmountable. The coronavirus which also meant that the PhD student (Lydia, I believe) had provided the GOTO data and placed it online was subsequently unavailable, hence only 32 GOTO images was used to train the data and exploring increasing the dataset was impossible. 
 
 
-\section{Other stuff}
-\label{other appendices}
-You can have as many other appendices as you need. These appendices could contain, for example, computer source code, additional experimental results, lengthy tables of data, etc.  They could also contain material from your Semester~I report to which you wish to make reference. These appendices should be labelled consecutively with letters, starting at \ref{other appendices}.
+\section{Source Code}
+\label{Code}
+The code used in this project can be found at the GitHub repository: 
 
+\section{Hardware and Software Packages Used}
+\label{HSWare}
+\subsection{Hardware}
+This was the specifications of the hardware used:
 
+Laptop 1
+\begin{itemize}
+\item OS: Windows 10 Professional
+\item CPU: Intel Core-i9 9900HK running at 3.6GHz (8-core)
+\item GPU: GTX 2080 at base clock
+\item RAM: 32GB DDR4
+\end{itemize}
 
+Laptop 2
+\begin{itemize}
+\item OS: MacOS Catalina 10.15.1
+\item CPU: Intel Core-i7 6920HQ running at 2.9GHz (Quad-core)
+\item GPU: Irrelevant because software does not support non-CUDA cards
+\item RAM: 16GB LPDDR3
+\end{itemize}
+
+\subsection{Software}
+\begin{itemize}
+\item Anaconda 2019.10
+\item Python 3.7.6
+\item Numpy 1.18.1
+\item Astropy 4.0
+\item Tensorflow 2.1.0
+\item Pandas 1.0.1
+\item sklearn 0.22.1
+\item photutils 0.7.2
+\item Keras 2.3.1 (Using Tensorflow backend)	
+\end{itemize}
 
 % Don't change these lines
 \bsp	% typesetting comment
