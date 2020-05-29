@@ -107,7 +107,7 @@ Early methods for automated classifications involved selecting features manually
 
 Subsequent developments of this field was the advent of Principal Component Analysis (PCA) \citep{PCA} and Support Vector Machine (SVM) \citep{SVM}---which were discussed in more depth in my Semester 1 Report. PCA enables feature selection which is blind to the researchers. This is because PCA essentially selects the principal components, which are linear combinations of the input features. Input features are features which the classifier processes to make a classification. They can be manually selected as in the older methods, examples of this include the color of the object, or the ellipticity. PCA orders these principal components in order of variance (which can also be understood as information density). With this, one only needs to select the first $x$ principal components as one has the computing power to handle, where $x$ is the number of dimensions the hardware is capable of processing in a reasonable time. This gives an objective way of both selecting features and dimension reduction. 
 
-SVM is a binary classification algorithm which seeks to classify objects into two classes in such a way that the dividing line has as much distance to the closest datapoint as possible. The algorithm is best described using a figure---see Fig.~\ref{figure:SVMex}. \citep{SVM}
+SVM is a binary classification algorithm which seeks to classify objects into two classes in such a way that the dividing line has as much distance to the closest datapoint as possible. The algorithm is best described using a figure---see Fig.~\ref{figure:SVMex}. \citep{SVM2}
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{../Figures/SVMpic}
@@ -239,7 +239,7 @@ Fully connected layer(s) are simply an FNN added in the end of the convolutional
 \subsection{Optimisation algorithms}
 In order for a neural network to be of any use to anyone it must be trained. Training is a process where the weights of the neural network are modified to better predict the desired outcome. The broad idea behind optimisation of a neural network is that one is trying to minimise some loss function. A loss function is a function assigned to assess the classifier. There are many varieties of loss functions, but a simple example of one would be a function that assigns a loss of 1 when a classification is incorrect while a loss of 0 when the classification is correct. The optimizer will then seek to change the classifier in such a way to minimize this function. 
 
-Given that the problem is a minimisation problem, it would be reasonable to use some kind of algorithm which takes into account the gradient of the hypersurface that the optimiser is attempting to optimise over because it is known that at local minima the gradient of the surface is 0. In fact, descending via gradient descent ensures that the path descended is the steepest one. \citep{Gradient Descent} NB: A hypersurface is a generalization of the concept of the surface which exists in 3D space. A surface is a 2D object which exists within a 3D space, similarly, a hypersurface is a (n-1)D object in n-D space. 
+Given that the problem is a minimisation problem, it would be reasonable to use some kind of algorithm which takes into account the gradient of the hypersurface that the optimiser is attempting to optimise over because it is known that at local minima the gradient of the surface is 0. In fact, descending via gradient descent ensures that the path descended is the steepest one. \citep{GradientDescent} NB: A hypersurface is a generalization of the concept of the surface which exists in 3D space. A surface is a 2D object which exists within a 3D space, similarly, a hypersurface is a (n-1)D object in n-D space. 
 
 In a general form, the equation for gradient descent is 
 \begin{equation}
@@ -330,7 +330,7 @@ The data used in this project was preprocessed using the LSST stack. The steps i
 \item Comparison to the previous images to determine if the sources have changed
 \end{itemize}
 
-The exact way the data is processed is detailed in \citet{GOTOLSST}. 
+The exact way the data is processed is detailed in \citet{LSST} \citet{GOTOLSST}.
 
 
  \section{Method}
