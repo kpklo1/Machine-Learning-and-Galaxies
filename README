@@ -1,3 +1,4 @@
 1. Put all .fits files (which are in SDSS) in newfits.
 2. Run extractionloop.py to make cutouts.
-3. Open DeepNN notebook to use deep learning.
+3. Open Keras Deep NN notebook to use deep learning.
+4. Use Data Augmentation notebook to use augmented data for CNN training.
