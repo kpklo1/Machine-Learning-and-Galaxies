@@ -615,6 +615,9 @@ This project proves the viability of using a neural network classify to assist i
 
 Over the course of conducting this project, a number of pitfalls which have been found are that software compatibility is a vital aspect of any coding task. Most of the time spent on working on high level code (such as what Keras provides), is whether the package works in your existing environment and what methods can be used to harmonise them. Another aspect of working with high level code is that often, if something fails to work as one intends, there is no easy fix because the root cause is buried within the lower level implementation which working with the higher level code seeks to avoid. A prime example of this would be the GPU implementation of Keras---since Keras relies on Tensorflow (in this project) as its backend, the Keras GPU implementation is actually the Tensorflow implementation. If that fails to work, then the code which is possibly faulty lies in the Tensorflow source code, which is written in very complex C++. However, overall, working with high level code is an easily accessible way for non-computer scientists to access the tools of machine learning, hence, the prospects of machine learning in astronomy should only grow over time. 
 
+\section*{Acknowledgements}
+Thanks to Dr James Mullaney for his thoughtful criticism, comments and guidance throughout the course of the project. This project would not have been successful if not for his often timely interventions to prevent time being wasted on a dead end. Thanks also to Lydia Makrygianni who found and uploaded GOTO images which was also covered by SDSS. The images formed the basis of this entire project and without them the project wouldn't have even gotten off the ground.
+
 % References
 %
 % The best way to enter references is to use BibTeX:
@@ -665,7 +668,7 @@ In terms of software issues, I ran into multiple instances where my GPU would no
 Finally, the report took substantially longer than 10-20 hours, in fact, report writing took, on the order of 45-50 hours. This meant that there was no time to explore making a CNN which distinguished between spiral and elliptical galaxies as was a stretch goal in the plan.
 \section{Effect of industrial action and coronavirus}
 \label{2020 special}
-The coronavirus epidemic meant that I traveled back to my home country of Hong Kong in late March. When I arrived, I was subject to 14 days of home quarantine with no broadband internet. However, this was mitigated somewhat by using mobile data, but was not ideal. This also meant that project meetings needed to be scheduled at night time here, but this was by no means insurmountable. The coronavirus which also meant that the PhD student (Lydia, I believe) had provided the GOTO data and placed it online was subsequently unavailable, hence only 32 GOTO images was used to train the data and exploring increasing the dataset was impossible. 
+The coronavirus epidemic meant that I traveled back to my home country of Hong Kong in late March. When I arrived, I was subject to 14 days of home quarantine with no broadband internet. However, this was mitigated somewhat by using mobile data, but was not ideal. This also meant that project meetings needed to be scheduled at night time here, but this was by no means insurmountable. The coronavirus which also meant that the PhD student (Lydia) had provided the GOTO data and placed it online was subsequently unavailable, hence only 32 GOTO images was used to train the data and exploring increasing the dataset was impossible. 
 
 
 \section{Source Code}
