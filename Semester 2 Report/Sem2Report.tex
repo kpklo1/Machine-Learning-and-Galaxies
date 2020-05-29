@@ -330,8 +330,7 @@ The data used in this project was preprocessed using the LSST stack. The steps i
 \item Comparison to the previous images to determine if the sources have changed
 \end{itemize}
 
-The exact way the data is processed is detailed in \citet{LSST} 
-and \citet{GOTOLSST}. 
+The exact way the data is processed is detailed in \citet{GOTOLSST}. 
 
 
  \section{Method}
@@ -601,7 +600,7 @@ A study done on data of similar quality to this project by \citet{Aniyan2017} yi
 A direct comparison can be made with \citet{Kim2016} as that was a study done on star-galaxy classification using CNNs. They achieved a maximum $F_1$ Score of 0.9603 ($F_1$ calculation here mine). This is significantly better than the $F_1$ Score achieved in this project which indicates that there should be significant optimizations available to made in the future.
 
 \section{Future Improvements}
-A key source of possible improvement is adding more data to train the model. At the moment, there is no lack of data, since data the data required to train the model is simply images which is captured by GOTO, but also in the SDSS catalogues. The overlap of these datasets are quite large and so there is no lack of data here. 
+A key source of possible improvement is adding more data to train the model. At the moment, there is no lack of data, since the data required to train the model is simply images which is captured by GOTO, but also in the SDSS catalogues. The overlap of these datasets are quite large and so there is no lack of data here. 
 
 A concern at large datasets, however, is a memory problem. Since computers have finite RAM, at large datasets, the size of the dataset would frequently exceed the RAM of a regular computer. The train-test split approach relies on loading the entire dataset into RAM before performing operations on it. This would not work if the dataset exceeds RAM size. In research applications, the hardware is usually either processing speed bound (CPU and GPU are limitation, while RAM is effectively unlimited), or memory bound (RAM is limited, while processing power is very high, usually by way of CPUs with very high core counts). In processor-bound applications, the train-test split is appropriate because RAM is faster than loading from disk and has the benefit of knowing what the entire dataset looks like beforehand and therefore allows for some preprocessing. In memory-bound applications however, the train-test split does not work and instead an alternative method must be sought. A popular method for image recognition is the dataloader approach. \citep{Dataloader} This approach only retrieves images which are needed for the specific training batch and therefore the memory requirements are much smaller, but has a trade off of requiring much more processing power as well as needing a fast storage medium (SSD, or even RAM based storage like Intel Optane is ideal). 
 
