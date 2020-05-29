@@ -1,13 +1,3 @@
-@INPROCEEDINGS{kernaltrick,
-  author={H. {TALABANI} and E. {AVCI}},
-  booktitle={2018 International Conference on Artificial Intelligence and Data Processing (IDAP)},
-  title={Impact of Various Kernels on Support Vector Machine Classification Performance for Treating Wart Disease},
-  year={2018},
-  volume={},
-  number={},
-  pages={1-6}}
-
-
 @article{UniversalApproximationTheorem,
 title = "Multilayer feedforward networks with a nonpolynomial activation function can approximate any function",
 journal = "Neural Networks",
@@ -19,10 +9,21 @@ issn = "0893-6080",
 doi = "https://doi.org/10.1016/S0893-6080(05)80131-5",
 url = "http://www.sciencedirect.com/science/article/pii/S0893608005801315",
 author = "Moshe Leshno and Vladimir Ya. Lin and Allan Pinkus and Shimon Schocken",
-keywords = "Multilayer feedforward networks, Activation functions, Role of threshold, Universal approximation capabilities, approximation"
+keywords = "Multilayer feedforward networks, Activation functions, Role of threshold, Universal approximation capabilities, (ÎŒ) approximation",
+abstract = "Several researchers characterized the activation function under which multilayer feedforward networks can act as universal approximators. We show that most of all the characterizations that were reported thus far in the literature are special cases of the following general result: A standard multilayer feedforward network with a locally bounded piecewise continuous activation function can approximate any continuous function to any degree of accuracy if and only if the network's activation function is not a polynomial. We also emphasize the important role of the threshold, asserting that without it the last theorem does not hold."
 }
 
-@InProceedings{ReLu,
+@INPROCEEDINGS{kernaltrick,
+  author={H. {TALABANI} and E. {AVCI}},
+  booktitle={2018 International Conference on Artificial Intelligence and Data Processing (IDAP)},
+  title={Impact of Various Kernels on Support Vector Machine Classification Performance for Treating Wart Disease},
+  year={2018},
+  volume={},
+  number={},
+  pages={1-6},
+  }
+
+  @InProceedings{ReLu,
   title = 	 {Deep Sparse Rectifier Neural Networks},
   author = 	 {Xavier Glorot and Antoine Bordes and Yoshua Bengio},
   booktitle = 	 {Proceedings of the Fourteenth International Conference on Artificial Intelligence and Statistics},
@@ -36,10 +37,11 @@ keywords = "Multilayer feedforward networks, Activation functions, Role of thres
   publisher = 	 {PMLR},
   pdf = 	 {http://proceedings.mlr.press/v15/glorot11a/glorot11a.pdf},
   url = 	 {http://proceedings.mlr.press/v15/glorot11a.html},
+  abstract = 	 {While logistic sigmoid neurons are more biologically plausible than hyperbolic tangent neurons, the latter work better for training multi-layer neural networks. This paper shows that rectifying neurons are an even better model of biological neurons and yield equal or better performance than hyperbolic tangent networks in spite of the hard non-linearity and non-differentiability at zero, creating sparse representations with true zeros which seem remarkably suitable for naturally sparse data. Even though they can take advantage of semi-supervised setups with extra-unlabeled data, deep rectifier networks can reach their best performance without requiring any unsupervised pre-training on purely supervised tasks with large labeled datasets. Hence, these results can be seen as a new milestone in the attempts at understanding the difficulty in training deep but purely supervised neural networks, and closing the performance gap between neural networks learnt with and without unsupervised pre-training. [pdf]}
 }
 
 @book{NeuralNetworksandDeepLearning,
- author={Nielsen, Michael}
+ author={Nielsen, Michael},
  title={Neural Networks and Deep Learning},
  url={http://neuralnetworksanddeeplearning.com},
 }
@@ -82,13 +84,14 @@ author = {Ide, Hidenori and Kurita, Takio},
 year = {2017},
 month = {05},
 pages = {2684-2691},
-title = {Improvement of learning for CNN with ReLU activation by sparse regularization},
+booktitle = {Improvement of learning for CNN with ReLU activation by sparse regularization},
 doi = {10.1109/IJCNN.2017.7966185}
 }
 
 @article{SGD,
  ISSN = {00034851},
  URL = {http://www.jstor.org/stable/2236690},
+ abstract = {Let M(x) be a regression function which has a maximum at the unknown point θ. M(x) is itself unknown to the statistician who, however, can take observations at any level x. This paper gives a scheme whereby, starting from an arbitrary point x1, one obtains successively x2, x3, ⋯ such that xn converges to θ in probability as n → ∞.},
  author = {J. Kiefer and J. Wolfowitz},
  journal = {The Annals of Mathematical Statistics},
  number = {3},
@@ -116,6 +119,7 @@ abstract = "A momentum term is usually included in the simulations of connection
 
 @article{AdaDelta,
 author = {Zeiler, Matthew},
+journal = {ArXiv},
 year = {2012},
 month = {12},
 pages = {},
@@ -204,18 +208,6 @@ archivePrefix = {arXiv},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
-@ARTICLE{Hubble,
-       author = {{Hubble}, E.~P.},
-        title = "{The classification of spiral nebulae}",
-      journal = {The Observatory},
-         year = 1927,
-        month = sep,
-       volume = {50},
-        pages = {276-281},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/1927Obs....50..276H},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-}
-
 @article{SVM,
   title={A class of algorithms for pattern recognition learning},
   author={Vapnik, V and Chervonenkis, A Ya},
@@ -230,19 +222,56 @@ archivePrefix = {arXiv},
     title={Deep Learning},
     author={Ian Goodfellow and Yoshua Bengio and Aaron Courville},
     publisher={MIT Press},
-    note={http://www.deeplearningbook.org},
+    note={\url{http://www.deeplearningbook.org}},
     year={2016}
 }
 
-@article{adorf_1988_supervised,
+
+article{adorf1988supervised,
   author = {Adorf, H. -M. and Meurs, E. J. A.},
   pages = {315-322},
   title = {Supervised and unsupervised classification — The case of IRAS point sources},
-  url = {http://adsabs.harvard.edu/abs/1988LNP...310..315A},
-  urldate = {2019-12-05},
   year = {1988},
   journal = {Large-Scale Structures in the Universe Observational and Analytical Methods}
 }
+INPROCEEDINGS{Adorf88,
+       author = {{Adorf}, H. -M. and {Meurs}, E.~J.~A.},
+        title = "{Supervised and unsupervised classification - the case of IRAS point sources.}",
+     keywords = {Catalogues:Infrared Galaxies, Infrared Galaxies:Catalogues, Infrared Galaxies:Space Distribution, Infrared Galaxies:Statistics},
+    booktitle = {Large-Scale Structures in the Universe. Observational and Analytical Methods},
+         year = 1988,
+        month = jan,
+        pages = {315-322},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/1988lssu.conf..315A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+
+
+@ARTICLE{Hubble27,
+       author = {{Hubble}, E. P.},
+        title = "{The classification of spiral nebulae}",
+      journal = {The Observatory},
+         year = 1927,
+        month = sep,
+       volume = {50},
+        pages = {276-281}
+}
+
+@ARTICLE{Hubble26,
+       author = {{Hubble}, E.~P.},
+        title = "{Extragalactic nebulae.}",
+      journal = {\apj},
+         year = 1926,
+        month = dec,
+       volume = {64},
+        pages = {321-369},
+          doi = {10.1086/143018},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/1926ApJ....64..321H},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
 
 @article{MCC,
 title = "Comparison of the predicted and observed secondary structure of T4 phage lysozyme",
@@ -294,11 +323,13 @@ doi = {10.1501/0003168}
   year={2019}
 }
 
+
 @article{History,
 author = {Wang, Haohan and Raj, Bhiksha},
 year = {2017},
 month = {02},
 pages = {},
+journal = {ArXiv}
 title = {On the Origin of Deep Learning}
 }
 
@@ -313,7 +344,7 @@ journal = {Philosophical Transactions of the Royal Society A: Mathematical, Phys
 doi = {10.1098/rsta.2015.0202}
 }
 
-@inproceedings{SVM2,
+inproceedings{SVM2,
   title={A Review on Support Vector Machine for Data Classification},
   author={Himani P. Bhavsar and Mahesh H. Panchal},
   year={2012}
@@ -330,10 +361,12 @@ journal = {IEEE Journal of Emerging and Selected Topics in Power Electronics},
 doi = {10.1109/JESTPE.2019.2916621}
 }
 
+
 @article{GOTO,
 author = {Gompertz, BP and Cutter, R and Steeghs, D and Galloway, Duncan and Lyman, J and Ulaczyk, K and Dyer, MJ and Ackley, K and Dhillon, VS and O'Brien, PT and Ramsay, G and Poshyachinda, S and Kotak, Raj and Nuttall, L and Breton, Rene and Pallé, E and Pollacco, D and Thrane, E and Aukkaravittayapun, S and Wiersema, K},
 year = {2020},
 month = {03},
+journal = {ArXiv}
 pages = {},
 title = {Searching for electromagnetic counterparts to gravitational-wave merger events with the prototype Gravitational-wave Optical Transient Observer (GOTO-4)}
 }
@@ -358,17 +391,6 @@ title = {Detection and Tracking of Pallets using a Laser Rangefinder and Machine
 doi = {10.13140/RG.2.2.30795.69926}
 }
 
-@article{pooling,
-author = {Yani, Muhamad and Irawan, S, and S.T., M.T.},
-year = {2019},
-month = {05},
-pages = {012052},
-title = {Application of Transfer Learning Using Convolutional Neural Network Method for Early Detection of Terry’s Nail},
-volume = {1201},
-journal = {Journal of Physics: Conference Series},
-doi = {10.1088/1742-6596/1201/1/012052}
-}
-
 @article{MNIST,
   added-at = {2010-06-28T21:16:30.000+0200},
   author = {LeCun, Yann and Cortes, Corinna},
@@ -377,7 +399,7 @@ doi = {10.1088/1742-6596/1201/1/012052}
   howpublished = {http://yann.lecun.com/exdb/mnist/},
   interhash = {21b9d0558bd66279df9452562df6e6f3},
   intrahash = {935bad99fa1f65e03c25b315aa3c1032},
-  keywords = {MSc\_checked character_recognition mnist network neural},
+  keywords = {MSc _checked character_recognition mnist network neural},
   lastchecked = {2016-01-14 14:24:11},
   timestamp = {2016-07-12T19:25:30.000+0200},
   title = {{MNIST} handwritten digit database},
@@ -405,17 +427,19 @@ pages = {},
 title = {High Performance I/O For Large Scale Deep Learning}
 }
 
+
 @article{Khalifa2017,
 author = {Khalifa, Nour Eldeen and Taha, Mohamed and Hassanien, Aboul Ella and Selim, Ibrahim},
 year = {2017},
 month = {09},
 pages = {},
+journal = {International Conference on Computing Sciences and Engineering (ICCSE)}
 title = {Deep Galaxy: Classification of Galaxies based on Deep Convolutional Neural Networks}
 }
 
 @article{Aniyan2017,
 	doi = {10.3847/1538-4365/aa7333},
-	url = {\url{https://doi.org/10.3847%2F1538-4365%2Faa7333}},
+	url = {https://doi.org/10.3847%2F1538-4365%2Faa7333},
 	year = 2017,
 	month = {jun},
 	publisher = {American Astronomical Society},
@@ -425,7 +449,6 @@ title = {Deep Galaxy: Classification of Galaxies based on Deep Convolutional Neu
 	author = {A. K. Aniyan and K. Thorat},
 	title = {Classifying Radio Galaxies with the Convolutional Neural Network},
 	journal = {The Astrophysical Journal Supplement Series},
-}
 
 @article{Kim2016,
     author = {Kim, Edward J. and Brunner, Robert J.},
@@ -436,6 +459,7 @@ title = {Deep Galaxy: Classification of Galaxies based on Deep Convolutional Neu
     pages = {4463-4475},
     year = {2016},
     month = {10},
+    abstract = "{Most existing star–galaxy classifiers use the reduced summary information from catalogues, requiring careful feature extraction and selection. The latest advances in machine learning that use deep convolutional neural networks (ConvNets) allow a machine to automatically learn the features directly from the data, minimizing the need for input from human experts. We present a star–galaxy classification framework that uses deep ConvNets directly on the reduced, calibrated pixel values. Using data from the Sloan Digital Sky Survey and the Canada–France–Hawaii Telescope Lensing Survey, we demonstrate that ConvNets are able to produce accurate and well-calibrated probabilistic classifications that are competitive with conventional machine learning techniques. Future advances in deep learning may bring more success with current and forthcoming photometric surveys, such as the Dark Energy Survey and the Large Synoptic Survey Telescope, because deep neural networks require very little, manual feature engineering.}",
     issn = {0035-8711},
     doi = {10.1093/mnras/stw2672},
     url = {https://doi.org/10.1093/mnras/stw2672},
@@ -460,16 +484,19 @@ archivePrefix = {arXiv},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
-@unpublished{GOTOLSST,
-author = {J. R. Mullaney, L. Makrygianni, and friends},
-title = {Processing GOTO data with the LSST stack i : Production of coadded frames},
+@unpublished{GOTOLSST
+author = "J. R. Mullaney, L. Makrygianni, and friends",
+title = "Processing GOTO data with the LSST stack i : Production of coadded frames",
+note = "submitted",
 }
+
 
 @article{Flatten,
 author = {Dumoulin, Vincent and Visin, Francesco},
 year = {2016},
 month = {03},
 pages = {},
+journal = {ArXiv}
 title = {A guide to convolution arithmetic for deep learning}
 }
 
@@ -484,38 +511,9 @@ journal = {AI 2006: Advances in Artificial Intelligence, Lecture Notes in Comput
 doi = {10.1007/11941439_114}
 }
 
-@ARTICLE{LSST,
-       author = {{Bosch}, James and {Armstrong}, Robert and {Bickerton}, Steven and
-         {Furusawa}, Hisanori and {Ikeda}, Hiroyuki and {Koike}, Michitaro and
-         {Lupton}, Robert and {Mineo}, Sogo and {Price}, Paul and
-         {Takata}, Tadafumi and {Tanaka}, Masayuki and {Yasuda}, Naoki and
-         {AlSayyad}, Yusra and {Becker}, Andrew C. and {Coulton}, William and
-         {Coupon}, Jean and {Garmilla}, Jose and {Huang}, Song and
-         {Krughoff}, K. Simon and {Lang}, Dustin and {Leauthaud}, Alexie and
-         {Lim}, Kian-Tat and {Lust}, Nate B. and {MacArthur}, Lauren A. and {Mand
-        elbaum}, Rachel and {Miyatake}, Hironao and {Miyazaki}, Satoshi and
-         {Murata}, Ryoma and {More}, Surhud and {Okura}, Yuki and
-         {Owen}, Russell and {Swinbank}, John D. and {Strauss}, Michael A. and
-         {Yamada}, Yoshihiko and {Yamanoi}, Hitomi},
-        title = "{The Hyper Suprime-Cam software pipeline}",
-      journal = {\pasj},
-     keywords = {methods: data analysis, surveys, techniques: image processing, Astrophysics - Instrumentation and Methods for Astrophysics},
-         year = 2018,
-        month = jan,
-       volume = {70},
-          eid = {S5},
-        pages = {S5},
-          doi = {10.1093/pasj/psx080},
-archivePrefix = {arXiv},
-       eprint = {1705.06766},
- primaryClass = {astro-ph.IM},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2018PASJ...70S...5B},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-}
+And there are so many things wrong with these that VS code doesn't even know how to colour them...
+misc{sourceproperties, title={SourceProperties¶}, url=\url{https://photutils.readthedocs.io/en/stable/api/photutils.segmentation.SourceProperties.html#photutils.segmentation.SourceProperties}, journal={SourceProperties - photutils v0.7.2}}
 
+misc{photutils, title={MedianBackground¶}, url=\url{https://photutils.readthedocs.io/en/stable/api/photutils.background.MedianBackground.html}, journal={MedianBackground - photutils v0.7.2}}
 
-@misc{sourceproperties, title={SourceProperties}, url=\url{https://photutils.readthedocs.io/en/stable/api/photutils.segmentation.SourceProperties.html#photutils.segmentation.SourceProperties}, journal={SourceProperties - photutils v0.7.2}}
-
-@misc{photutils, title={MedianBackground}, url=\url{https://photutils.readthedocs.io/en/stable/api/photutils.background.MedianBackground.html}, journal={MedianBackground - photutils v0.7.2}}
-
-@misc{KaggleMNIST, title={How to choose CNN Architecture MNIST}, url=\url{https://www.kaggle.com/cdeotte/how-to-choose-cnn-architecture-mnist}, journal={Kaggle}, publisher={Kaggle}, author={Deotte, Chris}, year={2018}, month={Sep}}
+misc{KaggleMNIST, title={How to choose CNN Architecture MNIST}, url=\url{https://www.kaggle.com/cdeotte/how-to-choose-cnn-architecture-mnist}, journal={Kaggle}, publisher={Kaggle}, author={Deotte, Chris}, year={2018}, month={Sep}}
