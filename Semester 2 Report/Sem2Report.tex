@@ -83,7 +83,7 @@ Department of Physics \&\ Astronomy, University of Sheffield}
 
 % Abstract of the paper
 \begin{abstract}
-The Gravitational-wave Optical Transient Observer (GOTO) records a large amount of data by way of wide-field observations. This amount of data requires an automated method to process and classify. Using deep learning, a method for classifying stars from galaxies was proven to be successful. A few neural architectures were explored and the best classifier reached an $F_1$ Score of 0.93798, and a Matthews Correlation Coefficient of 0.87935. This represents a proof of concept of using machine learning in a classifier to classify astronomical objects. 
+The Gravitational-wave Optical Transient Observer (GOTO) records a large amount of data by way of wide-field observations. This amount of data requires an automated method to process and classify. Using deep learning, a method for classifying stars from galaxies was proven to be successful. A few neural architectures were explored and the best classifier reached an $F_1$ Score of 0.93798, and a Matthews Correlation Coefficient of 0.87935. This represents a proof of concept for using machine learning in a classifier to classify astronomical objects as well as a tool for initial classification of results from large surveys.
 \end{abstract}
 
 
@@ -330,7 +330,8 @@ The data used in this project was preprocessed using the LSST stack. The steps i
 \item Comparison to the previous images to determine if the sources have changed
 \end{itemize}
 
-The exact way the data is processed is detailed in \citet{Hypercam} and \citet{GOTOLSST}. 
+The exact way the data is processed is detailed in \citet{Hypercam} 
+and \citet{GOTOLSST}. 
 
 
 
@@ -669,7 +670,7 @@ The coronavirus epidemic meant that I traveled back to my home country of Hong K
 
 \section{Source Code}
 \label{Code}
-The code used in this project can be found at the GitHub repository: 
+The code used in this project can be found at the GitHub repository: \url{https://github.com/kpklo1/Machine-Learning-and-Galaxies}
 
 \section{Hardware and Software Packages Used}
 \label{HSWare}
@@ -704,6 +705,38 @@ Laptop 2
 \item photutils 0.7.2
 \item Keras 2.3.1 (Using Tensorflow backend)	
 \end{itemize}
+
+\section{Miscellaneous Figures}
+\label{ExtraFigs}
+Some figures were produced during the course of making the report but were not used in the body of the text. However, I feel it may be useful to include them nonetheless as they may shed light on some aspects of the project which remains unclear in the body. 
+
+\begin{figure*}
+
+ \begin{subfigure}{\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_self} 
+ \caption{CNN from Scratch}
+ \label{fig:CNN_self}
+ \end{subfigure}
+ \begin{subfigure}{\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_MNIST}
+ \caption{MNIST CNN}
+ \label{fig:CNN_MNIST}
+ \end{subfigure}
+ \begin{subfigure}{\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_Augment_Self}
+ \caption{Data Augmented CNN from Scratch}
+ \label{fig:CNN_Augment_Self}
+ \end{subfigure}
+  \begin{subfigure}{\columnwidth}
+ \includegraphics[width=\columnwidth]{../Figures/CNN_Augment_MNIST}
+ \caption{Data Augmented MNIST CNN}
+ \label{fig:CNN_Augment_MNIST}
+ \end{subfigure}
+
+ \caption{These are a series of graphs showing the convergence of the CNN models over epoch. Of note is Fig.~\ref{fig:CNN_Augment_Self}, where the accuracy dropped to 0.65 but returned to convergence. I do not have an explanation for this. It may be a statistical fluke, or a bug in the program.}
+ \label{fig:Examples}
+ \end{figure*}
+
 
 \section{Miscellaneous Items}
 \label{Misc}
